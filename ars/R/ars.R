@@ -99,7 +99,7 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, mode = 0, step = 0.5){
     if(test1 < 0 | test2 > 0){
       stop('the function is not log-convexity on the provided bound')
     } else{
-      p <- c(l, u)}
+      inif <- c(l, u)}
   }
   ## case 2: user enter infinite lower bound and finite upper bound
   ## define the lower starting if lower bound is inf 
@@ -120,7 +120,7 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, mode = 0, step = 0.5){
     define_check(ll, FUN)
     define_check(u, FUN)
     
-    p <- c(ll, u)
+    inif <- c(ll, u)
   }
   ## case 3: user input finite lower bound but infinit upper bound
   if (l != -Inf && u == Inf){
@@ -139,7 +139,7 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, mode = 0, step = 0.5){
     ## check define
     define_check(l, FUN)
     define_check(uu, FUN)
-    p <- c(l, uu)
+    inif <- c(l, uu)
   }
   ## case 4: the default (-inf, inf)
   if (l == -Inf && u == Inf){
@@ -163,12 +163,12 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, mode = 0, step = 0.5){
     }
     define_check(ll, FUN)
     define_check(uu, FUN)
-    p <- c(ll,uu)
+    inif <- c(ll,uu)
   }
   
   
   ## main function
-  p <- sort(p)
+  p <- sort(inif)
   i <- 1
   set <- rep(0, n_iter)
   par <- setParams(fn, min_bound, max_bound, p) # calculate parameters for initial set of fixed points
