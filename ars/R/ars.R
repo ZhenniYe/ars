@@ -111,7 +111,7 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, mode = 0, step = 0.5){
     ll <- mode
     test <- Deriv(ll, FUN, l, u)
     ## push the samller starting abscissae left unitl find the first one that the diff is postive
-    while (-Inf < test && test <= 0 && count <=50){  
+    while (-Inf < test && test <= 0 && count <=100){  
       ll <- ll - step
       test <- Deriv(ll, FUN, l, u)
       count = count + 1
@@ -131,7 +131,7 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, mode = 0, step = 0.5){
     uu <- mode # uu= 0 if a<0, uu= a+0.5 if a >0
     test <- Deriv(uu, FUN, l, u)
     ## push the larger starting abscissae right unitl find the first one that the diff is negative
-    while (0 <=  test && test < Inf && count <=50){  
+    while (0 <=  test && test < Inf && count <=100){  
       uu <- uu + step 
       test <- Deriv(uu, FUN, l, u) 
       count = count + 1
@@ -150,13 +150,13 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, mode = 0, step = 0.5){
     test2 <- Deriv(uu, FUN, l, u)
     
     ## push the samller starting abscissae left unitl find the first one that the diff is postive
-    while (-Inf < test1 && test1 <= 0 && count <= 50 ){
+    while (-Inf < test1 && test1 <= 0 && count <= 100 ){
       ll <- ll - step
       test1 <- Deriv(ll)
       count = count + 1
     }
     ## push the larger starting abscissae right unitl find the first one that the diff is negative
-    while (0 <=  test2 && test2 < Inf && count <= 50){
+    while (0 <=  test2 && test2 < Inf && count <= 100){
       uu <- uu + step
       test <- Deriv(uu)
       count = count + 1
@@ -166,6 +166,9 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, mode = 0, step = 0.5){
     inif <- c(ll,uu)
   }
   
+  if (count >= 100) {
+    stop ("Initial points cannot be found. Please try another valid estimated mode",.call = FALSE)
+  }
   
   ## main function
   p <- sort(inif)
