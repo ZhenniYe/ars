@@ -174,6 +174,8 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, mode = 0, step = 0.5){
   p <- sort(inif)
   i <- 1
   set <- rep(0, n_iter)
+  min_bound <- ifelse(l== -Inf, -1e8, l)
+  max_bound <- ifelse(u== Inf, 1e8, u)
   par <- setParams(fn, min_bound, max_bound, p) # calculate parameters for initial set of fixed points
   
   # loop through iterations
