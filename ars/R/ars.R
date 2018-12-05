@@ -37,6 +37,7 @@
 
 
 
+
 ars <- function(n_iter, fn, l = -Inf, u = Inf, mode = 0, step = 0.5){
   ### Checks ###
 
