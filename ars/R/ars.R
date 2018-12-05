@@ -59,7 +59,8 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, mode = 0, step = 0.5){
 
   # assign mode
   Mode <- function(fn, l, u){
-    intv <- c(seq(l, u, length.out = 1000),0)
+    intv <- seq(l, u, length.out = 1000)
+    if (l<0 && 0<u) {intv <- c(intv, 0)}
     logf <- log(fn(intv))
     mode <- intv[logf == max(logf)]
     if (length(mode) > 1) {
