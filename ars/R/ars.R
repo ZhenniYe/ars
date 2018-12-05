@@ -57,31 +57,14 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, mode = 0, step = 0.5){
   }
 
 
-  # vectorized dervative function
-  vecDeriv <- function(x, FUN, l, u){
-    eps = 1e-8
-    res <- (FUN(x + eps)-FUN(x - eps))/2*eps
-    res[x==l] <- (FUN(x[x==l] + eps)-FUN(x[x==l]))/eps
-    res[x==u] <- (FUN(x[x==u])-FUN(x[x==u] - eps))/eps
-    return(res)
-  }
   # assign mode
   Mode <- function(fn, l, u){
-    intv <- seq(l, u, length.out = 1000)
-    slope <- vecDeriv(intv, fn, l, u)
-    diff <- abs(slope)
-    if (all(slope > 0) || all(slope < 0)) {
-      mode <- intv[diff == min(diff)][1]
-    }else if (all(slope == 0)) {
-      mode <- 0
-    }else{
-      left <- tail(slope[slope>0], n=1)
-      right <- slope[slope<0][1]
-      if (abs(left) <= abs(right)) {
-        mode <- tail(intv[slope>0], n=1)
-      } else{
-        mode <- intv[slope<0][1]
-      }
+    intv <- c(seq(l, u, length.out = 1000),0)
+    logf <- log(fn(intv))
+    mode <- intv[logf == max(logf)]
+    if (length(mode) > 1) {
+      diff <- abs(mode)
+      mode <- mode[diff == min(diff)]
     }
     return(mode)
   }
