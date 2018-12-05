@@ -61,8 +61,8 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, mode = 0, step = 0.5){
   Mode <- function(fn, l, u){
     intv <- seq(l, u, length.out = 1000)
     if (l<0 && 0<u) {intv <- c(intv, 0)}
-    logf <- log(fn(intv))
-    mode <- intv[logf == max(logf)]
+    results <- fn(intv)
+    mode <- intv[results == max(results)]
     if (length(mode) > 1) {
       diff <- abs(mode)
       mode <- mode[diff == min(diff)]
@@ -229,5 +229,4 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, mode = 0, step = 0.5){
   }
   return(set)
 }
-
 
