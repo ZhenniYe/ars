@@ -4,18 +4,20 @@
 \alias{ars}
 \title{Adapative Rejection Sampling}
 \usage{
-ars(fn, min_bound, max_bound, p, n_iter = 1000)
+ars(n_iter, fn, l = -Inf, u = Inf, center = 0, step = 0.5)
 }
 \arguments{
-\item{fn}{function; log-concave function f(x).}
+\item{n_iter}{numeric: number of points to sample.}
 
-\item{min_bound}{numeric; the lower bound of the domain as the first starting point. The default is -Inf.}
+\item{fn}{- function: log-concave density function to draw sample from.}
 
-\item{max_bound}{numeric; the upper bound of the domain as the second starting point. The default is Inf.}
+\item{l}{- numeric: the lower bound of the density function. The default is -Inf.}
 
-\item{p}{numeric vector; starting fixed points for evaluation.}
+\item{u}{- numeric: the upper bound of the density function. The default is Inf.}
 
-\item{n_iter}{numeric; number of points to sample. The default is 1000.}
+\item{center}{- numeric: the estimated center of of log-scale fn. The default is 0.}
+
+\item{step}{- numeric: value of bandwidth around center used to initialize function. The default is 0.5.}
 }
 \value{
 \code{ars} returns a vector of length n_iter containing sampled values.
@@ -30,14 +32,15 @@ based on adapative rejection sampling method. For more detials, see Gilks and Wi
 }
 \examples{
 ##  Sample from Standard Normal Distribution
-ars(dnorm, min_bound = -5, max_bound = 5, p = c(-1, 1))
+ars(n_iter=10000, fn=dnorm, l = -Inf, u= Inf, center=0, step=0.5)
+ars(10000, dnorm) # equivalent call
 
 ## Sample from Gamma Distribution
 gamma_test <- function(x){
 k <- dgamma(x, shape=7.5, scale=1)
 return(k)
 }
-ars(gamma_test, min_bound = 0.1, max_bound = 20, p = c(3,10), n_iter = 10000)
+ars(n_iter = 10000, fn= gamma_test, l= 0.1, u=20)
 
 }
 \references{

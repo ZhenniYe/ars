@@ -3,7 +3,7 @@ Type: Package
 Title: Adaptive Rejection Sampling
 Version: 0.1.0
 Author: Pan, Yanting; Ye, Zhenni; Myers, Vince
-Maintainer: Who to complain to <yourfault@somewhere.net>
+Maintainer: Ye, Zhenni <ye.zhenni@berkeley.edu>
 Description: Use adaptive rejection sampling method 
     to draw samples from log-concave densities.
 License: Unlimited

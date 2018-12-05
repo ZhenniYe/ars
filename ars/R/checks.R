@@ -1,15 +1,18 @@
+### Functions needed for in-function tests ###
 
-# Assign mode
-Mode <- function(fn, l, u){
-  intv <- seq(l, u, length.out = 1000)
-  if (l<0 && 0<u) {intv <- c(intv, 0)}
-  results <- fn(intv)
-  mode <- intv[results == max(results)]
-  if (length(mode) > 1) {
-    diff <- abs(mode)
-    mode <- mode[diff == min(diff)]
-  }
-  return(mode)
+# Design the dervative function
+Deriv <- function(x, FUN, l, u){
+  eps = 1e-8
+  if (x==l) {return ((FUN(x + eps)-FUN(x))/eps)}
+  if (x==u) {return ((FUN(x)-FUN(x - eps))/eps)}
+  if (l <= x && x <= u) {return((FUN(x + eps)-FUN(x - eps))/2*eps)}
+}
+
+
+# Check  whether the point is defined on the function
+define_check <- function (point, FUN){
+  if(!is.finite(FUN(point))) {
+    stop('point is not defined on fn', call. = FALSE)}
 }
 
 
@@ -18,12 +21,7 @@ Check_logconcave <- function(fn, p){
   x <- sort(p)
   hp <- calcDeriv(function(x) log(fn(x)), p)
 
-  result <- all(diff(hp) < 0)
+  result <- all(diff(hp) <= 0)
   return(result)
 }
-
-
-
-
-
 
