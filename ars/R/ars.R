@@ -59,7 +59,7 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, mode = 0, step = 0.5){
 
   # assign mode
   Mode <- function(fn, l, u){
-    intv <- seq(l, u, length.out = 1000)
+    intv <- seq(l, u, length.out = 100)
     if (l<0 && 0<u) {intv <- c(intv, 0)}
     results <- fn(intv)
     mode <- intv[results == max(results)]
@@ -71,9 +71,9 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, mode = 0, step = 0.5){
   }
   # find mode
   if (l != -Inf && u != Inf) {mode <- Mode(fn, l, u)}
-  if (l == -Inf && u != Inf) {mode <- Mode(fn, 1e-16, u)}
+  if (l == -Inf && u != Inf) {mode <- Mode(fn, -1e16, u)}
   if (l != -Inf && u == Inf) {mode <- Mode(fn, l, 1e16)}
-  if (l == -Inf && u == Inf) {mode <- Mode(fn, 1e-16, 1e16)}
+  if (l == -Inf && u == Inf) {mode <- Mode(fn, -1e16, 1e16)}
 
 
 
