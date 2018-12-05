@@ -69,16 +69,27 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, mode = 0, step = 0.5){
   Mode <- function(fn, l, u){
     intv <- seq(l, u, length.out = 1000)
     slope <- vecDeriv(intv, fn, l, u)
-    diff <- abs(slope - 0)
-
-    mode <- intv[diff == min(diff)]
+    diff <- abs(slope)
+    if (all(slope > 0) || all(slope < 0)) {
+      mode <- intv[diff == min(diff)][1]
+    }else if (all(slope == 0)) {
+      mode <- 0
+    }else{
+      left <- tail(slope[slope>0], n=1)
+      right <- slope[slope<0][1]
+      if (abs(left) <= abs(right)) {
+        mode <- tail(intv[slope>0], n=1)
+      } else{
+        mode <- intv[slope<0][1]
+      }
+    }
     return(mode)
   }
   # find mode
-  if (l == -Inf) {l <- 1e-16}
-  if (u == Inf) {u <- 1e16}
-  Mode(t, l ,u)
-
+  if (l != -Inf && u != Inf) {mode <- Mode(fn, l, u)}
+  if (l == -Inf && u != Inf) {mode <- Mode(fn, 1e-16, u)}
+  if (l != -Inf && u == Inf) {mode <- Mode(fn, l, 1e16)}
+  if (l == -Inf && u == Inf) {mode <- Mode(fn, 1e-16, 1e16)}
 
 
 
