@@ -89,6 +89,7 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, center = 0, step = 0.5){
       center <- u - step  ### find the lower bound begining with u-0.5
     }
     ll <- center
+    define_check(ll, FUN)
     test <- Deriv(ll, FUN, l, u)
     ### push the samller starting abscissae left unitl find the first one that the diff is postive
     while (-Inf < test && test <= 0 && count <=100){
@@ -111,6 +112,7 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, center = 0, step = 0.5){
       center = l + step ### find the upper bound begining with l+0.5
     }
     uu <- center ### uu= 0 if l<0, uu= l+0.5 if l >0
+    define_check(uu, FUN)
     test <- Deriv(uu, FUN, l, u)
     ### push the larger starting abscissae right unitl find the first one that the diff is negative
     while (0 <=  test && test < Inf && count <=100){
@@ -129,6 +131,8 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, center = 0, step = 0.5){
 
     ll <- center - step
     uu <- center + step
+    define_check(uu, FUN)
+    define_check(ll, FUN)
     test1 <- Deriv(ll, FUN, l, u)
     test2 <- Deriv(uu, FUN, l, u)
 
