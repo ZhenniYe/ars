@@ -51,12 +51,13 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, center = 0, step = 0.5){
   if (!is.numeric(l) || !is.numeric(u)) {stop('Please provide the numeric boundary', call. = FALSE)}
   if (l == u) {stop('Please provide the valid boundary', call. = FALSE)}
   if (l > u) {
-    warning('The lower bound should be less the upper bound, swaping values', call. = FALSE, immediate. = TRUE)
+    warning('The lower bound should be less than the upper bound, swaping values', call. = FALSE, immediate. = TRUE)
     tmp <- l
     l <- u
     u <- tmp
   }
-  
+
+  ### Functions needed for in-function tests ###
 
   # Take log scale of the density function
   FUN <- function(x,fun=fn){
@@ -89,7 +90,6 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, center = 0, step = 0.5){
       center <- u - step  ### find the lower bound begining with u-0.5
     }
     ll <- center
-    define_check(ll, FUN)
     test <- Deriv(ll, FUN, l, u)
     ### push the samller starting abscissae left unitl find the first one that the diff is postive
     while (-Inf < test && test <= 0 && count <=100){
@@ -102,7 +102,7 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, center = 0, step = 0.5){
     define_check(u, FUN)
 
     inif <- c(ll, u)
-    }
+  }
 
   ## case 3: user input finite lower bound but infinit upper bound
   ## find the upper starting
@@ -112,7 +112,6 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, center = 0, step = 0.5){
       center = l + step ### find the upper bound begining with l+0.5
     }
     uu <- center ### uu= 0 if l<0, uu= l+0.5 if l >0
-    define_check(uu, FUN)
     test <- Deriv(uu, FUN, l, u)
     ### push the larger starting abscissae right unitl find the first one that the diff is negative
     while (0 <=  test && test < Inf && count <=100){
@@ -124,15 +123,13 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, center = 0, step = 0.5){
     define_check(l, FUN)
     define_check(uu, FUN)
     inif <- c(l, uu)
-    }
+  }
 
   ## case 4: the default (-inf, inf)
   if (l == -Inf && u == Inf){
 
     ll <- center - step
     uu <- center + step
-    define_check(uu, FUN)
-    define_check(ll, FUN)
     test1 <- Deriv(ll, FUN, l, u)
     test2 <- Deriv(uu, FUN, l, u)
 
@@ -151,11 +148,12 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, center = 0, step = 0.5){
     define_check(ll, FUN)
     define_check(uu, FUN)
     inif <- c(ll,uu)
-    }
+  }
 
   if (count >= 100) {stop ("Initial points cannot be found under given conditions.
                            Please check the boundary or(and) center of the log-concave density.",
                            .call = FALSE)}
+
 
 
   ### Main ###
@@ -180,20 +178,20 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, center = 0, step = 0.5){
     if ((squeeze / exp_pdf) > unif){
       set[i] <- x_val
       i <- i + 1
-      } else { # if squeeze test failed, perform rejection test
-        # if rejection test passed, accept and iterate
-        if ((fn(x_val) / exp_pdf) > unif){
-          set[i] <- x_val
-          i <- i + 1
-          }
-        # whether the rejection test fails or not, add candidate point to fixed points
-        p <- sort(c(p, x_val))
-        # check for log-concave
-        if (Check_logconcave(fn, p) == FALSE) stop('Please provide the log-concave density', call. = FALSE)
-        par <- setParams(fn, min_bound, max_bound, p)
-        }
+    } else { # if squeeze test failed, perform rejection test
+      # if rejection test passed, accept and iterate
+      if ((fn(x_val) / exp_pdf) > unif){
+        set[i] <- x_val
+        i <- i + 1
+      }
+      # whether the rejection test fails or not, add candidate point to fixed points
+      p <- sort(c(p, x_val))
+      # check for log-concave
+      if (Check_logconcave(fn, p) == FALSE) stop('Please provide the log-concave density', call. = FALSE)
+      par <- setParams(fn, min_bound, max_bound, p)
     }
+  }
 
   return(set)
-  }
+}
 

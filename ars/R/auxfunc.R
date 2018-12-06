@@ -57,7 +57,7 @@ expCDF <- function(x, p, int_x, m_p, lf_p){
   b_vec <- lf_p - p*m_p # calculate b in y=mx+b format for each tangent line
   which_section <- findInterval(x, c(-Inf, int_x, Inf)) # break x vector into sections denoting related enveloping line
   nsections <- max(which_section)
-  
+
   # calculate starting point of each segment of piecewise CDF
   piece_difs <- rep(0, length(int_x)+1)
   for (j in 1:length(int_x)){
@@ -66,7 +66,7 @@ expCDF <- function(x, p, int_x, m_p, lf_p){
     piece_difs[j+1] <- right - left
   }
   piece_difs_cumul <- cumsum(piece_difs) # vertical adjustment to pieces of CDF to create continuity
-  
+
   for (k in 1:nsections){ # loop through pieces of piecewise function, computing F(x) for each x
     x_section <- x[which_section == k]
     if (m_p[k] == 0){
@@ -76,7 +76,7 @@ expCDF <- function(x, p, int_x, m_p, lf_p){
     }
     exp_cdf[which_section == k] <- y_section - piece_difs_cumul[k]
   }
-  
+
   adj <- min(exp_cdf) # set minimum point of CDF to zero
   nc <- max(exp_cdf - adj) # normalizing constant
   norm_exp_cdf <- (exp_cdf - adj) / nc # normalized piecewise CDF
@@ -124,6 +124,3 @@ setParams <- function(fn, min_bound, max_bound, p){
   # return the parameters needed by the invCDF function
   return(list(m_p = m_p, lf_p = lf_p, int_x = int_x, b_vec = b_vec, nc=nc, shift=shift, adj = adj))
 }
-
-
-
