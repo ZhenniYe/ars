@@ -57,22 +57,26 @@ expCDF <- function(x, p, int_x, m_p, lf_p){
   b_vec <- lf_p - p*m_p # calculate b in y=mx+b format for each tangent line
   which_section <- findInterval(x, c(-Inf, int_x, Inf)) # break x vector into sections denoting related enveloping line
   nsections <- max(which_section)
-
+  
   # calculate starting point of each segment of piecewise CDF
   piece_difs <- rep(0, length(int_x)+1)
   for (j in 1:length(int_x)){
-    left <- (1/m_p[j])*exp(m_p[j]*int_x[j] + b_vec[j])
-    right <- (1/m_p[j+1])*exp(m_p[j+1]*int_x[j] + b_vec[j+1])
+    left <- ifelse(m_p[j] == 0, exp(b_vec[j]) * int_x[j], (1/m_p[j])*exp(m_p[j]*int_x[j] + b_vec[j]))
+    right <- ifelse(m_p[j+1] == 0, exp(b_vec[j+1]) * int_x[j], (1/m_p[j+1])*exp(m_p[j+1]*int_x[j] + b_vec[j+1]))
     piece_difs[j+1] <- right - left
   }
   piece_difs_cumul <- cumsum(piece_difs) # vertical adjustment to pieces of CDF to create continuity
-
+  
   for (k in 1:nsections){ # loop through pieces of piecewise function, computing F(x) for each x
     x_section <- x[which_section == k]
-    y_section <- (1/m_p[k])*exp(m_p[k]*x_section + b_vec[k])
+    if (m_p[k] == 0){
+      y_section <- exp(b_vec[k]) * x_section
+    } else {
+      y_section <- (1/m_p[k])*exp(m_p[k]*x_section + b_vec[k])
+    }
     exp_cdf[which_section == k] <- y_section - piece_difs_cumul[k]
   }
-
+  
   adj <- min(exp_cdf) # set minimum point of CDF to zero
   nc <- max(exp_cdf - adj) # normalizing constant
   norm_exp_cdf <- (exp_cdf - adj) / nc # normalized piecewise CDF
@@ -82,9 +86,20 @@ expCDF <- function(x, p, int_x, m_p, lf_p){
 # function to take invert the CDF at a given point for F(x)
 invCDF <- function(y, int_x, m_p, b_vec, nc, shift, adj){
   n <- length(m_p) - 1
-  breaks <- ((1/m_p[1:n])*exp(m_p[1:n]*int_x + b_vec[1:n]) - shift[1:n])/nc
+  breaks <- rep(0, n)
+  for (j in 1:n){
+    if (m_p[j] == 0){
+      breaks[j] <- (exp(b_vec[j]) * int_x[j] - shift[j] - adj)/nc
+    } else {
+      breaks[j] <- ((1/m_p[j])*exp(m_p[j]*int_x[j] + b_vec[j]) - shift[j] - adj)/nc
+    }
+  }
   loc <- findInterval(y, c(-Inf, breaks, Inf))
-  x_output <- (log(m_p[loc]*(nc*y + shift[loc] + adj)) - b_vec[loc])/m_p[loc]
+  if (m_p[loc] == 0){
+    x_output <- (nc*y + shift[loc] + adj) / exp(b_vec[loc])
+  } else{
+    x_output <- (log(m_p[loc]*(nc*y + shift[loc] + adj)) - b_vec[loc])/m_p[loc]
+  }
   return(x_output)
 }
 
