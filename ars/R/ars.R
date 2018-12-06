@@ -56,8 +56,7 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, center = 0, step = 0.5){
     l <- u
     u <- tmp
   }
-
-  ### Functions needed for in-function tests ###
+  
 
   # Take log scale of the density function
   FUN <- function(x,fun=fn){
@@ -66,16 +65,20 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, center = 0, step = 0.5){
 
   # create the starting points
   count  = 1
-  ## case 1: user input finite lower and upper bound
+  ## case 1: user finite input as starting points
   if (l != -Inf && u != Inf){
     ### check whether the point is defined on the function
     define_check(l, FUN)
     define_check(u, FUN)
+    inif <- c(l, u)
 
+    ## for uniform case:
     ### test the derivative
     test1 <- Deriv(l, FUN, l, u)
     test2 <- Deriv(u, FUN, l, u)
-    inif <- c(l, u)
+    if ((abs(test1) < 1e-6)&&(abs(test1)< 1e-6)){
+      return (set = runif(n = n_iter, l, u))
+      }
     }
 
   ## case 2: user enter infinite lower bound and finite upper bound
@@ -83,7 +86,7 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, center = 0, step = 0.5){
   if (l == -Inf && u != Inf){
 
     if (center > u) { ### u < 0
-      center <- u - step
+      center <- u - step  ### find the lower bound begining with u-0.5
     }
     ll <- center
     test <- Deriv(ll, FUN, l, u)
@@ -101,12 +104,13 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, center = 0, step = 0.5){
     }
 
   ## case 3: user input finite lower bound but infinit upper bound
+  ## find the upper starting
   if (l != -Inf && u == Inf){
 
     if (center < l) {  ### l > 0
-      center = l + step
+      center = l + step ### find the upper bound begining with l+0.5
     }
-    uu <- center ### uu= 0 if a<0, uu= a+0.5 if a >0
+    uu <- center ### uu= 0 if l<0, uu= l+0.5 if l >0
     test <- Deriv(uu, FUN, l, u)
     ### push the larger starting abscissae right unitl find the first one that the diff is negative
     while (0 <=  test && test < Inf && count <=100){

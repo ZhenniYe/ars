@@ -25,3 +25,8 @@ Check_logconcave <- function(fn, p){
   return(result)
 }
 
+
+
+
+
+
