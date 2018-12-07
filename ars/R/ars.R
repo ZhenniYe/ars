@@ -74,7 +74,7 @@ ars <- function(N,
     }
   
     ## find the starting abscissaes 
-    count  = 1
+    iter  = 1
     ## case 1: finite input as starting abscissaes 
     if (l != -Inf && u != Inf){
       ### check whether the point is defined on the function
@@ -97,10 +97,10 @@ ars <- function(N,
       ll <- center
       test <- Deriv(ll, FUN, l, u)
       ### push the samller starting abscissae left unitl find the first one whose diff is postive
-      while (-Inf < test && test <= 0 && count <=100){
+      while (-Inf < test && test <= 0 && iter <= 50){
         ll <- ll - step
         test <- Deriv(ll, FUN, l, u)
-        count = count + 1
+        iter = iter + 1
       }
       ### check define
       define_check(ll, FUN)
@@ -116,10 +116,10 @@ ars <- function(N,
       uu <- center   # uu = 0 if l < 0; if l > 0,  uu = l + 0.5 
       test <- Deriv(uu, FUN, l, u)
       ### push the larger starting abscissae right unitl find the first one whose diff is negative
-      while (0 <=  test && test < Inf && count <=100){
+      while (0 <=  test && test < Inf && iter <= 50){
         uu <- uu + step
         test <- Deriv(uu, FUN, l, u)
-        count = count + 1
+        iter = iter + 1
       }
       ### check define
       define_check(l, FUN)
@@ -134,24 +134,23 @@ ars <- function(N,
       test1 <- Deriv(ll, FUN, l, u)
       test2 <- Deriv(uu, FUN, l, u)
       ### push the samller starting abscissae left unitl find the first one that the diff is postive
-      while (-Inf < test1 && test1 <= 0 && count <= 100 ){
+      while (-Inf < test1 && test1 <= 0 && iter <= 50){
         ll <- ll - step
-        test1 <- Deriv(ll)
-        count = count + 1
+        test1 <- Deriv(ll, FUN, l, u)
+        iter = iter + 1
       }
       ### push the larger starting abscissae right unitl find the first one that the diff is negative
-      while (0 <= test2 && test2 < Inf && count <= 100){
+      while (0 <= test2 && test2 < Inf && iter <= 50){
         uu <- uu + step
-        test <- Deriv(uu)
-        count = count + 1
+        test <- Deriv(uu, FUN, l, u)
+        iter = iter + 1
       }
       define_check(ll, FUN)
       define_check(uu, FUN)
       inif <- c(ll,uu)
     }
   
-    if (count >= 100) {stop ("Initial points cannot be found.
-                             Please re-enter the boundary or (and) center of the density function",
+    if (iter >= 50) {stop ("Initial points cannot be found.Please re-enter the boundary or (and) center of the function",
                              .call = FALSE)}
 
 
