@@ -7,8 +7,10 @@ Deriv <- function(x, FUN, l, u){
   if (x==u) {res <- ((FUN(x)-FUN(x - eps))/eps)}
   if (l <= x && x <= u) {res <- ((FUN(x + eps)-FUN(x - eps))/(2*eps))}
 
-  if (res == 'NaN' || !is.finite(res)){stop('Target function is not differentiable in the given boundary. Please check for boundary',
-                                            call. = FALSE)}
+  if (res == 'NaN' || !is.finite(res)){
+    stop('Target function is not differentiable in the given boundary. Please check for boundary',
+                                            call. = FALSE)
+  }
   return(res)
 }
 
@@ -24,7 +26,6 @@ define_check <- function (point, FUN){
 Check_logconcave <- function(fn, p){
   x <- sort(p)
   hp <- calcDeriv(function(x) log(fn(x)), p)
-
   result <- all(diff(hp) < 0)
   return(result)
 }

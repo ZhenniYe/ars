@@ -283,7 +283,7 @@ ars <- function(n_iter, fn, l = -Inf, u = Inf, center = 0, step = 0.5){
 
 ## test 1: standard normal with -inf, inf
 set.seed(0)
-set1 <- ars (n_iter=10000, dnorm, l = -Inf, u = Inf)
+set1 <- ars (N=10000, dnorm, l = -Inf, u = Inf)
 x1 <- seq(-4, 4, length=100)
 z1 <- dnorm(x)
 plot(density(set1))
@@ -291,7 +291,7 @@ lines(x1, z1, type="l", col="blue")
 
 ## test2 : uniform distribution (0,1)
 set.seed(0)
-set2 <- ars (n_iter=10000, dunif, l = 0, u = 1)
+set2 <- ars (N=10000, dunif, l = 0, u = 1)
 plot(density(set2))
 
 

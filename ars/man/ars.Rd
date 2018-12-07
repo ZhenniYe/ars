@@ -4,43 +4,42 @@
 \alias{ars}
 \title{Adapative Rejection Sampling}
 \usage{
-ars(n_iter, fn, l = -Inf, u = Inf, center = 0, step = 0.5)
+ars(N, fn, l = -Inf, u = Inf, center = 0, step = 0.5)
 }
 \arguments{
-\item{n_iter}{numeric: number of points to sample.}
+\item{N}{sample size (number of observations).}
 
-\item{fn}{- function: log-concave density function to draw sample from.}
+\item{fn}{log-concave function that is proporitional to the sampling density.}
 
-\item{l}{- numeric: the lower bound of the density function. The default is -Inf.}
+\item{l}{the lower bound of the density function. The default is -Inf.}
 
-\item{u}{- numeric: the upper bound of the density function. The default is Inf.}
+\item{u}{the upper bound of the density function. The default is Inf.}
 
-\item{center}{- numeric: the estimated center of of log-scale fn. The default is 0.}
+\item{center}{estimated center of function. The default is 0.}
 
-\item{step}{- numeric: value of bandwidth around center used to initialize function. The default is 0.5.}
+\item{step}{value of bandwidth around center used to find the starting abscissaes. The default is 0.5.}
 }
 \value{
-\code{ars} returns a vector of length n_iter containing sampled values.
+\code{ars} returns a vector containing sampled values.
 }
 \description{
-`ars()` generates random numbers from log-concave functions by adapative rejection sampling.
+`ars` generates random sample from log-concave functions using adapative rejection sampling.
 }
 \details{
-This function takes a numeric argument n and a function argument f
-to generate random numbers from the given distribution in the specified sample size,
-based on adapative rejection sampling method. For more detials, see Gilks and Wild (1992).
+Using the method of adapative rejection sampling, the function generates random numbers from 
+the given distribution in the specified sample size N. For more detials, see Gilks and Wild (1992).
 }
 \examples{
 ##  Sample from Standard Normal Distribution
-ars(n_iter=10000, fn=dnorm, l = -Inf, u= Inf, center=0, step=0.5)
-ars(10000, dnorm) # equivalent call
+ars(N = 10000, fn = dnorm, l = -Inf, u = Inf, center = 0, step = 0.5)
+
 
 ## Sample from Gamma Distribution
 gamma_test <- function(x){
-k <- dgamma(x, shape=7.5, scale=1)
+k <- dgamma(x, shape = 7.5, scale = 1)
 return(k)
 }
-ars(n_iter = 10000, fn= gamma_test, l= 0.1, u=20)
+ars(N = 10000, fn = gamma_test, l = 0.1, u = 20)
 
 }
 \references{

@@ -1,32 +1,31 @@
 #' Adapative Rejection Sampling
 #'
-#' `ars()` generates random sample from log-concave densify function interested by users using adapative rejection sampling.
+#' `ars` generates random sample from log-concave densify function interested by users using adapative rejection sampling.
 #'
 #' This function takes a numeric argument n and a function argument f
 #' to generate random numbers from the given distribution in the specified sample size,
 #' based on adapative rejection sampling method. For more detials, see Gilks and Wild (1992).
 #'
-#' @param n_iter - numeric: number of points to sample.
-#' @param fn - function: density function to draw sample from.
+#' @param N - numeric: sample size (number of observations).
+#' @param fn - function: log-concave function that is proporitional to the sampling density.
 #' @param l - numeric: the lower bound of the density function. The default is -Inf.
 #' @param u - numeric: the upper bound of the density function. The default is Inf.
-#' @param center - numeric: the estimated center of of the density function. The default is 0.
-#' @param step - numeric: value of bandwidth around center used to finding the starting abscissaes. The default is 0.5.
+#' @param center - numeric: estimated center of function. The default is 0.
+#' @param step - numeric: value of bandwidth around center used to find the starting abscissaes. The default is 0.5.
 #'
-#' @return \code{ars} returns a vector of length n_iter containing sampled values.
+#' @return \code{ars} returns a vector of sampled values.
 #'
 #' @export
 #' @examples
 #' ##  Sample from Standard Normal Distribution
-#' ars(n_iter=10000, fn=dnorm, l = -Inf, u = Inf, center = 0, step = 0.5)
-#' ars(10000, dnorm) # equivalent call
+#' ars(N = 10000, fn = dnorm, l = -Inf, u = Inf, center = 0, step = 0.5)
 #'
 #' ## Sample from Gamma Distribution
 #' gamma_test <- function(x){
 #' k <- dgamma(x, shape = 7.5, scale = 1)
 #' return(k)
 #' }
-#' ars(n_iter = 10000, fn = gamma_test, l = 0.1, u = 20)
+#' ars(N = 10000, fn = gamma_test, l = 0.1, u = 20)
 #'
 #' @author
 #' Pan, Yanting; Ye, Zhenni; Myers, Vince; based on Gilks and Wild (1992).
@@ -39,7 +38,7 @@
 
 
 
-ars <- function(n_iter, 
+ars <- function(N, 
                 fn, 
                 l = -Inf, 
                 u = Inf, 
@@ -47,12 +46,12 @@ ars <- function(n_iter,
                 step = 0.5){
   
   
-  ##**************************** check the user input ****************************##
+    ##**************************** Input ****************************##
   
   
-    ## check n_iter
-    if(is.numeric(n_iter) == FALSE) {stop('Please provide the numeric sample size n_iter', call. = FALSE)}
-    if (n_iter%%1 != 0 || n_iter < 1) {stop("Please provide positive integer for sample size", call. = FALSE)}
+    ## check N
+    if(is.numeric(N) == FALSE) {stop('Please provide the numeric sample size N', call. = FALSE)}
+    if (N%%1 != 0 || N < 1) {stop("Please provide positive integer for sample size", call. = FALSE)}
     ## check fn
     if(is.function(fn) == FALSE) {stop('Please provide fn as an function', call. = FALSE)}
     ## check bounds
@@ -76,7 +75,7 @@ ars <- function(n_iter,
   
     ## find the starting abscissaes 
     count  = 1
-    ## case 1: finite input as starting points
+    ## case 1: finite input as starting abscissaes 
     if (l != -Inf && u != Inf){
       ### check whether the point is defined on the function
       define_check(l, FUN)
@@ -86,7 +85,7 @@ ars <- function(n_iter,
       test1 <- Deriv(l, FUN, l, u)
       test2 <- Deriv(u, FUN, l, u)
       if ((abs(test1) < 1e-8) && (abs(test1) < 1e-8)){
-        return (set = runif(n = n_iter, l, u))
+        return (set = runif(n = N, l, u))
         }
       }
 
@@ -111,10 +110,10 @@ ars <- function(n_iter,
 
     ## case 3: finite lower bound and infinit upper bound
     if (l != -Inf && u == Inf){
-      if (center < l) {  ### l > 0
-        center = l + step ### find the upper bound begining with l+0.5
+      if (center < l) {    # l > 0
+        center = l + step  # find the upper bound begining with l + 0.5
       }
-      uu <- center ### uu = 0 if l < 0; if l > 0,  uu = l + 0.5 
+      uu <- center   # uu = 0 if l < 0; if l > 0,  uu = l + 0.5 
       test <- Deriv(uu, FUN, l, u)
       ### push the larger starting abscissae right unitl find the first one whose diff is negative
       while (0 <=  test && test < Inf && count <=100){
@@ -156,9 +155,9 @@ ars <- function(n_iter,
                              .call = FALSE)}
 
 
-  ##**************************** Sampling & Updating  ****************************##
+    ##**************************** Sampling & Updating  ****************************##
           
-            ##******************* Main Function  *******************##
+              ##******************* Main Function  *******************##
     
     
     p <- sort(inif)
@@ -166,13 +165,13 @@ ars <- function(n_iter,
     if (Check_logconcave(fn, p) == FALSE) stop('Please provide the log-concave density', call. = FALSE)
   
     i <- 1
-    set <- rep(0, n_iter)
-    min_bound <- ifelse(l== -Inf, -1e8, l)
-    max_bound <- ifelse(u== Inf, 1e8, u)
+    set <- rep(0, N)
+    min_bound <- ifelse(l == -Inf, -1e8, l)
+    max_bound <- ifelse(u == Inf, 1e8, u)
     par <- setParams(fn, min_bound, max_bound, p) # calculate parameters for initial set of fixed points
   
     ## loop through iterations
-    while (i <= n_iter){
+    while (i <= N){
       y <- runif(1)
       unif <- runif(1)
       x_val <- invCDF(y, par$int_x, par$m_p, par$b_vec, par$nc, par$shift, par$adj)
@@ -182,15 +181,15 @@ ars <- function(n_iter,
       if ((squeeze / exp_pdf) > unif){
         set[i] <- x_val
         i <- i + 1
-      } else { # if squeeze test failed, perform rejection test
+      } else {  # if squeeze test failed, perform rejection test
         ### if rejection test passed, accept and iterate
         if ((fn(x_val) / exp_pdf) > unif){
           set[i] <- x_val
           i <- i + 1
         }
-        ## whether the rejection test fails or not, add candidate point to fixed points
+        ### whether the rejection test fails or not, add candidate point to fixed points
         p <- sort(c(p, x_val))
-        ## check for log-concave
+        ### check log-concave
         if (Check_logconcave(fn, p) == FALSE) stop('Please provide the log-concave density', call. = FALSE)
         par <- setParams(fn, min_bound, max_bound, p)
       }
