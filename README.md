@@ -5,7 +5,7 @@ R Package: Adaptive Reject Sampling (`ars`)
 
 
 ## Download the latest version
-Development of `ars` can be tracked at https://github.com/yantingpan/ars .
+Development of `ars` can be tracked at https://github.com/yantingpan/ars.
 Package can be installed by using devtools::install_github(’yantingpan/ars’)
 
 
