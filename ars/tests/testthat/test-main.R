@@ -1,6 +1,24 @@
 context('Primary ars() Function Testing')
 set.seed(2018)
 
+## functions used for testing
+normal_test <- function(x){return(dnorm(x, mean = 50, sd = 10))}
+uniform_test <- function(x){return(dunif(x, -1, 1))}
+gamma_test <- function(x){return(dgamma(x, 6))}
+gamma_test2 <- function(x){return(dgamma(x, 2))}
+gamma_test3 <- function(x){return(dgamma(x, 10))}
+beta_test <- function(x){return(dbeta(x, shape1=3, shape2=5))}
+beta_test2 <- function(x){return(dbeta(x, shape1=1, shape2=2))}
+chi_test <- function(x){return(dchisq(x, 1))}
+chi_test2 <- function(x){return(dchisq(x, 6))}
+chi_test3 <- function(x) {return(dchisq(x, df = 10))}
+t_test <- function(x){return(dt(x, 3))}
+t_test2 <- function(x){return(dt(x, 1))}
+f_test <- function(x){return(df(x, 9, 11))}
+f_test2 <- function(x){return(df(x, 1, 2))}
+binom_test <- function(x){return(dbinom(x, 50, 0.3))}
+other_test <- function(x){return(exp(x^2))}
+other_test2 <- function(x){return(exp(x^3))}
 
 
 test_that("Main function testing",{
