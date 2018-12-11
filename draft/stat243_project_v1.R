@@ -17,24 +17,24 @@
 
 # function to calculate slope of tangent lines
 calcDeriv <- function(fn, p){
-  dif <- 1e-10 
-  
+  dif <- 1e-10
+
   p1 <- fn(p)
   p2 <- fn(p + dif)
-  
+
   slope <- (p2 - p1) / dif
   return(slope)
 }
 
 # function to calculate lower squeeze function
 lowerPDF <- function(fn, x, p){
-  
+
   # squeeze function only applies if x is between the min and max fixed points
   if (x <= min(p) | x >= max(p)){
     return(0)
-    
+
   } else {
-    
+
     w <- findInterval(x, c(-Inf, p, Inf)) # find which section of squeeze line applies to x
     y <- ((p[w] - x)*log(fn(p[w-1])) + (x - p[w-1])*log(fn(p[w])))/(p[w] - p[w-1]) # value of squeeze at x
     return(exp(y))
@@ -43,7 +43,7 @@ lowerPDF <- function(fn, x, p){
 
 # function to compute piecewise exponential PDF
 expPDF <- function(x, p, int_x, m_p, lf_p){
- 
+
   b_vec <- lf_p - p*m_p # calculate b in y=mx+b format for each tangent line
   w <- findInterval(x, c(-Inf, int_x, Inf)) # find section of enveloping function that applies to x
   y <- m_p[w]*x + b_vec[w] # calculate y=log(env(x))
@@ -57,7 +57,7 @@ expCDF <- function(x, p, int_x, m_p, lf_p){
   b_vec <- lf_p - p*m_p # calculate b in y=mx+b format for each tangent line
   which_section <- findInterval(x, c(-Inf, int_x, Inf)) # break x vector into sections denoting related enveloping line
   nsections <- max(which_section)
-  
+
   # calculate starting point of each segment of piecewise CDF
   piece_difs <- rep(0, length(int_x)+1)
   for (j in 1:length(int_x)){
@@ -66,13 +66,13 @@ expCDF <- function(x, p, int_x, m_p, lf_p){
     piece_difs[j+1] <- right - left
   }
   piece_difs_cumul <- cumsum(piece_difs) # vertical adjustment to pieces of CDF to create continuity
-  
+
   for (k in 1:nsections){ # loop through pieces of piecewise function, computing F(x) for each x
     x_section <- x[which_section == k]
     y_section <- (1/m_p[k])*exp(m_p[k]*x_section + b_vec[k])
     exp_cdf[which_section == k] <- y_section - piece_difs_cumul[k]
   }
-  
+
   adj <- min(exp_cdf) # set minimum point of CDF to zero
   nc <- max(exp_cdf - adj) # normalizing constant
   norm_exp_cdf <- (exp_cdf - adj) / nc # normalized piecewise CDF
@@ -89,7 +89,7 @@ invCDF <- function(y, int_x, m_p, b_vec, nc, shift, adj){
 }
 
 # calculate the parameters for the enveloping function for a given set of fixed points p
-setParams <- function(fn, min_bound, max_bound, p){ 
+setParams <- function(fn, min_bound, max_bound, p){
 
   x <- sort(c(min_bound, max_bound, p)) # critical x-values
   m_p <- calcDeriv(function(x) log(fn(x)), p) # calculate slope of tangent lines
@@ -98,28 +98,28 @@ setParams <- function(fn, min_bound, max_bound, p){
   # compute intersection points
   n <- length(p)
   int_x <- (lf_p[2:n] - lf_p[1:n-1] - p[2:n]*m_p[2:n] + p[1:n-1]*m_p[1:n-1]) / (m_p[1:n-1] - m_p[2:n])
-  
+
   # calculate parameters for inverse CDF
   exp_cdf <- expCDF(x, p, int_x, m_p, lf_p) # y-output for piecewise linear PDF
   nc <- exp_cdf$norm.const
   shift <- exp_cdf$difs
   adj <- exp_cdf$adj
   b_vec <- lf_p - p*m_p
-  
+
   # return the parameters needed by the invCDF function
   return(list(m_p = m_p, lf_p = lf_p, int_x = int_x, b_vec = b_vec, nc=nc, shift=shift, adj = adj))
 }
 
 # main ARS sampling function
 # Requires user to input min, max, and fixed points p
-# I would suggest having tests to make sure the user provides at least 2 fixed points, and 
+# I would suggest having tests to make sure the user provides at least 2 fixed points, and
 # making sure all fixed points are between the min and the max
-ars <- function(fn, min_bound, max_bound, p, n_iter = 1000){ 
+ars <- function(fn, min_bound, max_bound, p, n_iter = 1000){
   p <- sort(p)
   i <- 1
   set <- rep(0, n_iter)
   par <- setParams(fn, min_bound, max_bound, p) # calculate parameters for initial set of fixed points
-  
+
   # loop through iterations
   while (i <= n_iter){
     y <- runif(1)
@@ -164,7 +164,7 @@ max <- 2
 p <- c(-0.8, 1.3)
 set2 <- ars(dnorm, min, max, p, n_iter = 10000)
 z <- seq(min, max, by=0.05)
-hist(set2, prob=TRUE)
+plot(density(set2))
 lines(z, dnorm(z)/(pnorm(max) - pnorm(min)), type="l", col="blue")
 
 

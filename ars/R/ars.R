@@ -38,20 +38,20 @@
 
 
 
-ars <- function(N, 
-                fn, 
-                l = -Inf, 
-                u = Inf, 
-                center = 0, 
+ars <- function(N,
+                fn,
+                l = -Inf,
+                u = Inf,
+                center = 0,
                 step = 0.5){
-  
-  
+
+
     ##**************************** Input ****************************##
-  
-  
+
+
     ## check N
-    if(is.numeric(N) == FALSE) {stop('Please provide the numeric sample size N', call. = FALSE)}
-    if (N%%1 != 0 || N < 1) {stop("Please provide positive integer for sample size", call. = FALSE)}
+    if(is.numeric(N) == FALSE) {stop('Please provide numeric sample size N', call. = FALSE)}
+    if (N %% 1 != 0 || N < 1) {stop("Please provide positive integer for sample size", call. = FALSE)}
     ## check fn
     if(is.function(fn) == FALSE) {stop('Please provide fn as an function', call. = FALSE)}
     ## check bounds
@@ -63,19 +63,21 @@ ars <- function(N,
       l <- u
       u <- tmp
     }
+    if (center >= 1e8 || center <= -1e8){
+      stop('Please provide valid boundary instead of using the defualt', call. = FALSE)}
 
-  
-  ##**************************** Initiatlization ****************************##
 
-  
+    ##**************************** Initiatlization ****************************##
+
+
     ## take log scale of the density function
     FUN <- function(x,fun=fn){
       return(log(fun(x)))
     }
-  
-    ## find the starting abscissaes 
+
+    ## find the starting abscissaes
     iter  = 1
-    ## case 1: finite input as starting abscissaes 
+    ## case 1: finite input as starting abscissaes
     if (l != -Inf && u != Inf){
       ### check whether the point is defined on the function
       define_check(l, FUN)
@@ -91,7 +93,7 @@ ars <- function(N,
 
     ## case 2: infinite lower bound and finite upper bound
     if (l == -Inf && u != Inf){
-      if (center > u) {  # u < 0
+      if (u < center ) {  # u < 0
         center <- u - step   # find the lower bound begining with u-0.5
       }
       ll <- center
@@ -110,10 +112,10 @@ ars <- function(N,
 
     ## case 3: finite lower bound and infinit upper bound
     if (l != -Inf && u == Inf){
-      if (center < l) {    # l > 0
+      if (l > center) {    # l > 0
         center = l + step  # find the upper bound begining with l + 0.5
       }
-      uu <- center   # uu = 0 if l < 0; if l > 0,  uu = l + 0.5 
+      uu <- center   # uu = 0 if l < 0; if l > 0,  uu = l + 0.5
       test <- Deriv(uu, FUN, l, u)
       ### push the larger starting abscissae right unitl find the first one whose diff is negative
       while (0 <=  test && test < Inf && iter <= 50){
@@ -149,26 +151,26 @@ ars <- function(N,
       define_check(uu, FUN)
       inif <- c(ll,uu)
     }
-  
+
     if (iter >= 50) {stop ("Initial points cannot be found.Please re-enter the boundary or (and) center of the function",
                              .call = FALSE)}
 
 
     ##**************************** Sampling & Updating  ****************************##
-          
+
               ##******************* Main Function  *******************##
-    
-    
+
+
     p <- sort(inif)
     ## check for log-concave
     if (Check_logconcave(fn, p) == FALSE) stop('Please provide the log-concave density', call. = FALSE)
-  
+
     i <- 1
     set <- rep(0, N)
     min_bound <- ifelse(l == -Inf, -1e8, l)
     max_bound <- ifelse(u == Inf, 1e8, u)
     par <- setParams(fn, min_bound, max_bound, p) # calculate parameters for initial set of fixed points
-  
+
     ## loop through iterations
     while (i <= N){
       y <- runif(1)
