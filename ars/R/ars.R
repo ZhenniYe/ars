@@ -67,6 +67,7 @@ ars <- function(N,
       stop('Please provide valid boundary instead of using the defualt', call. = FALSE)}
 
 
+
     ##**************************** Initiatlization ****************************##
 
 
@@ -154,6 +155,7 @@ ars <- function(N,
 
     if (iter >= 50) {stop ("Initial points cannot be found.Please re-enter the boundary or (and) center of the function",
                              .call = FALSE)}
+
 
 
     ##**************************** Sampling & Updating  ****************************##

@@ -8,7 +8,7 @@
 
 ## calculate slope of tangent lines
 ## fn: function needed to take derivative
-## p: a fixed points; intially provided by user, and updated after every rejection
+## p: fixed points; intially provided by user, and updated after every rejection
 calcDeriv <- function(fn, p){
   dif <- 1e-10
   p1 <- fn(p)
@@ -21,7 +21,7 @@ calcDeriv <- function(fn, p){
 
 ## function to calculate lower squeeze function
 ## fn: density function
-## x: a point
+## x: an abscissa point
 lowerPDF <- function(fn, x, p){
   ### squeeze function only applies if x is between the min and max fixed points
   if (x <= min(p) | x >= max(p)){
@@ -36,8 +36,8 @@ lowerPDF <- function(fn, x, p){
 
 
 ## function to compute piecewise exponential PDF
-## x: a point
-## p: a fixed points; intially provided by user, and updated after every rejection
+## x: abscissae points
+## p: fixed points; intially provided by user, and updated after every rejection
 ## int_x: intersection point for lines in log of enveloping function
 ## m_p: slope of lines in log of enveloping function at each fixed point p (uses y = mx + b form)
 ## lf_p: value of log of user-provided function at fixed points p
@@ -51,8 +51,8 @@ expPDF <- function(x, p, int_x, m_p, lf_p){
 
 
 ## function to compute piecewise exponential CDF
-## x: a point
-## p: a fixed points; intially provided by user, and updated after every rejection
+## x: abscissae points
+## p: fixed points; intially provided by user, and updated after every rejection
 ## int_x: intersection point for lines in log of enveloping function
 ## m_p: slope of lines in log of enveloping function at each fixed point p (uses y = mx + b form)
 ## lf_p: value of log of user-provided function at fixed points p
