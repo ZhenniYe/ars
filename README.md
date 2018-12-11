@@ -1,4 +1,4 @@
-# Adaptive-Rejection-Sampling
+# Adaptive Rejection Sampling
 R Package: Adaptive Reject Sampling (`ars`)
 
 `ars` can quickly generates number of observations with density function that is hard to evaluated. For more details of algorithms with regard to rejection sampling, see Gilks et al. (1992). The method we implemented is tangent approach instead of secant approach. The package is called 'ars' and you can install and use in R. The implemented method is tangent approach instead of secant approach. Package can be installed by using devtools::install_github(’yantingpan/ars’) 
