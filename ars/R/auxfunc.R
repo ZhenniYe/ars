@@ -23,7 +23,7 @@ calcDeriv <- function(fn, p){
 ## fn: density function
 ## x: a point
 lowerPDF <- function(fn, x, p){
-  # squeeze function only applies if x is between the min and max fixed points
+  ### squeeze function only applies if x is between the min and max fixed points
   if (x <= min(p) | x >= max(p)){
     return(0)
   } else {
@@ -62,7 +62,7 @@ expCDF <- function(x, p, int_x, m_p, lf_p){
   which_section <- findInterval(x, c(-Inf, int_x, Inf)) # break x vector into sections denoting related enveloping line
   nsections <- max(which_section)
 
-  # calculate starting point of each segment of piecewise CDF
+  ### calculate starting point of each segment of piecewise CDF
   piece_difs <- rep(0, length(int_x)+1)
   for (j in 1:length(int_x)){
     left <- ifelse(m_p[j] == 0, exp(b_vec[j]) * int_x[j], (1/m_p[j])*exp(m_p[j]*int_x[j] + b_vec[j]))
