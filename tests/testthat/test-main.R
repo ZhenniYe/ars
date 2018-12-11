@@ -1,6 +1,7 @@
 context('Primary ars() Function Testing')
 set.seed(2018)
 
+
 ## functions used for testing
 normal_test <- function(x){return(dnorm(x, mean = 50, sd = 10))}
 uniform_test <- function(x){return(dunif(x, -1, 1))}
@@ -122,7 +123,6 @@ test_that("Throw error message when density is not log-concave", {
 
 
 test_that("Throw error message when function is not differentiable",{
-
   print("test f Distribution")
   expect_error(ars(100, f_test, l = -1),
                "Input function is not differentiable in the given boundary. Please check for boundary")
@@ -149,7 +149,6 @@ test_that("Throw error message when function is not differentiable",{
 
 
 test_that("Throw error message when function is not continuous",{
-
   print("test Beta Distribution")
   expect_error(ars(100, beta_test, l = -1, u = 2),
                "Target function DO NOT EXIST in the given boundary")

@@ -1,9 +1,9 @@
 context('Auxiliary Functions Testing')
 set.seed(2018)
 
+
 ## functions used for testing
 square_test <- function(x){return(x^2)}
-
 
 
 test_that("Test `calcDeriv()` function",{
@@ -12,7 +12,6 @@ test_that("Test `calcDeriv()` function",{
 
   cat('\n`calcDeriv()` function tests passed`\n')
 })
-
 
 
 test_that("Test `lowerPDF()` function",{
@@ -27,7 +26,6 @@ test_that("Test `lowerPDF()` function",{
 })
 
 
-
 test_that("Test `expPDF()` function",{
   expect_is(expPDF(1, c(-1, 0, 2, 5), c(-0.5, 1.25, 3), c(3, 2, -2, -1), c(5, 10, 8, 6)), "numeric")
   expect_is(expPDF(c(0, 1, 2, 3, 4), c(-1, 0, 2, 5), c(-0.5, 1.25, 3), c(3, 2, -2, -1), c(5, 10, 8, 6)), "numeric")
@@ -36,7 +34,6 @@ test_that("Test `expPDF()` function",{
 
   cat('\n`expPDF()` function tests passed`\n')
 })
-
 
 
 test_that("Test `expCDF()` function",{
@@ -59,7 +56,6 @@ test_that("Test `expCDF()` function",{
 })
 
 
-
 test_that("Test `invCDF()` function",{
   expect_is(invCDF(1, c(1,2,3), c(0, -2), c(-0.919, 1.08),  0.571, c(0, -0.600), 0), "numeric")
   expect_is(invCDF(0.2, 1, c(0, -2), c(-0.919, 1.08),  0.571, c(0, -0.600), 0), "numeric")
@@ -70,7 +66,6 @@ test_that("Test `invCDF()` function",{
 
   cat('\n`invCDF()` function tests passed`\n')
 })
-
 
 
 test_that("Test `setParams()` function",{
@@ -87,9 +82,8 @@ test_that("Test `setParams()` function",{
   expect_true(is.vector(setParams(dnorm, -10, 10, c(-5, -1, 0, 1, 5))$shift))
   expect_is(setParams(dnorm, -10, 10, c(-5, -1, 0, 1, 5))$nc, "numeric")
   expect_is(setParams(dnorm, -10, 10, c(-5, -1, 0, 1, 5))$adj, "numeric")
-
-
   expect_is(setParams(dnorm, -2, 0, c(-2,0))$m_p[1], "numeric")
+  
   expect_equal(round(setParams(dnorm, -2, 0, c(-2,0))$m_p[1]), 2)
   expect_equal(setParams(dnorm, -2, 0, c(-2,0))$m_p[2], 0)
   expect_equal(round(setParams(dnorm, -2, 0, c(-2,0))$int_x), -1)
