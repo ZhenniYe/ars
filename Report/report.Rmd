@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
 ```{r functioncode, echo=FALSE}
 
+setwd('/Users/YZZ/ars/R')
 source("utils.R")
 source("ars.R")
 source("checks.R")
@@ -162,6 +163,7 @@ plot(envelope_CDF, yvec, type = 'l', xlab = "X-Values", ylab = "Cumulative Densi
 
   * Final Tests: 
     + To test our algorithm, we compared our resulting samples with the known distributions using Kolmogorov-Smirnov Tests. We tested our function against various log-concave distributions including the Normal distribution, Gamma distribution, Beta distribution, Logistic distribution, and Uniform distribution. Our algorithm consistently passed for all those functions with the significance level of 0.05. Furthermore, we also tested our function against the non-log-concave distributions including the Student t distribution, Chi-square distribution with one degree of freedom, and F distribution. Error message we designed appeared correctly as expected. 
+    + To test the validity checks, we tested the function with wrong inputs, non-log-concave density functions, non differentiable functions and non-continuous functions. All tests produced the error message as we expected. 
   
   * Module Tests: we tested all auxiliary functions to make sure the output of each individual function was correctly computed and formatted.
 
