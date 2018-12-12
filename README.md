@@ -14,5 +14,5 @@ Several log-concave density functions(trunacted normal, gamma, beta, etc.) are u
 
 
 ## Authors
-Vincent Myers <vincent_myers@berkeley.edu>, Yanting Pan <yanting_pan@berkeley.edu>, Zhenni Ye <ye.zhenni@berkeley.edu>, based on Gilks and Wild (1992).
+Vincent Myers <vincent_myers@berkeley.edu>, Yanting Pan <yanting_pan@berkeley.edu>, Zhenni Ye <ye.zhenni@berkeley.edu>.
 [For any mistakes found, please accept our apology and email Yanting through <yanting_pan@berkeley.edu> so we can fix it as soon as possible.]
