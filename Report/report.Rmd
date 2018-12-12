@@ -13,7 +13,6 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
 ```{r functioncode, echo=FALSE}
 
-setwd('/Users/YZZ/ars/R')
 source("utils.R")
 source("ars.R")
 source("checks.R")
@@ -50,7 +49,7 @@ gamma_test <- function(x){
 vals <- ars(10000, gamma_test, l = 0.01, u = 20)
 
 ## graph output
-z <- seq(0.01, 20, by=0.05)
+z <- seq(0.01, 20, by = 0.05)
 plot(density(vals), xlab = "Observation", ylab = "Density", 
      main = "Gamma Distribution", col = "red", lwd = 2)
 lines(z, gamma_test(z), type = 'l', col = "blue", lwd = 2)
@@ -125,7 +124,7 @@ legend("bottomright", legend = c("Envelope", "Target"),
        col = c("red", "black"), lty = 1, cex = 0.75)
 
 ## plot PDFs
-plot(xvec, target, type='l', ylim = c(0,0.3), xlab = "X-Values", 
+plot(xvec, target, type = 'l', ylim = c(0,0.3), xlab = "X-Values", 
      ylab = "Density", main = "PDF Comparison")
 lines(xvec, envelope, col = "red")
 legend("topright", legend = c("Envelope", "Target"), 
