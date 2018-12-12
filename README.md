@@ -10,9 +10,9 @@ Package can be installed via devtools::install_github('yantingpan/ars')
 
 
 ## Performance of sampling
-Several log-concave density functions(trunacted normal, gamma, beta, etc.) are used to test the performance of `ars`. The density of resulting sample points genrated by `ars` fit well with the input density function.   
+Several log-concave density functions(trunacted normal, gamma, beta, etc.) are used to test the performance of `ars`. The density of resulting sample points genrated by `ars` fits well with the input density function.   
 
 
 ## Authors
-Myers, Vince <vincent_myers@berkeley.edu>; Pan, Yanting <yanting_pan@berkeley.edu>; Ye, Zhenni <ye.zhenni@berkeley.edu>;  based on Gilks and Wild (1992).
+Vincent Myers <vincent_myers@berkeley.edu>, Yanting Pan <yanting_pan@berkeley.edu>, Zhenni Ye <ye.zhenni@berkeley.edu>, based on Gilks and Wild (1992).
 [For any mistakes found, please accept our apology and email Yanting through <yanting_pan@berkeley.edu> so we can fix it as soon as possible.]
