@@ -145,7 +145,7 @@ ars <- function(N,
       ### push the larger starting abscissae right unitl find the first one that the diff is negative
       while (0 <= test2 && test2 < Inf && iter <= 50){
         uu <- uu + step
-        test <- Deriv(uu, FUN, l, u)
+        test2 <- Deriv(uu, FUN, l, u)
         iter = iter + 1
       }
       define_check(ll, FUN)
@@ -153,8 +153,7 @@ ars <- function(N,
       inif <- c(ll,uu)
     }
 
-    if (iter >= 50) {stop ("Initial points cannot be found.Please re-enter the boundary or (and) center of the function",
-                             .call = FALSE)}
+    if (iter > 50) {stop ("Initial points cannot be found.Please re-enter the boundary or (and) center of the function", .call = FALSE)}
 
 
 
