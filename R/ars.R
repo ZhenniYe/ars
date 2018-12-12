@@ -28,7 +28,7 @@
 #' ars(N = 10000, fn = gamma_test, l = 0.1, u = 20)
 #'
 #' @author
-#' Pan, Yanting; Ye, Zhenni; Myers, Vince; based on Gilks and Wild (1992).
+#' Vincent Myers, Yanting Pan, and Zhenni Ye, based on Gilks and Wild (1992).
 #'
 #' @references
 #' W. R. Gilks, P. Wild. (1992), "Adaptive Rejection Sampling for Gibbs Sampling," Applied Statistics 41:337–348.

@@ -28,3 +28,5 @@ Check_logconcave <- function(fn, p){
   result <- all(diff(hp) < 0)
   return(result)
 }
+
+

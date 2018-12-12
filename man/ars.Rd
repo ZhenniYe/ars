@@ -26,7 +26,7 @@ ars(N, fn, l = -Inf, u = Inf, center = 0, step = 0.5)
 `ars` generates random sample from log-concave densify function interested by users using adapative rejection sampling.
 }
 \details{
-This function takes a numeric argument N and a function argument fn
+This function takes a numeric argument n and a function argument f
 to generate random numbers from the given distribution in the specified sample size,
 based on adapative rejection sampling method. For more detials, see Gilks and Wild (1992).
 }
@@ -46,5 +46,5 @@ ars(N = 10000, fn = gamma_test, l = 0.1, u = 20)
 W. R. Gilks, P. Wild. (1992), "Adaptive Rejection Sampling for Gibbs Sampling," Applied Statistics 41:337–348.
 }
 \author{
-Yanting Pan, Vince Myers and Zhenni Ye; based on Gilks and Wild (1992).
+Vincent Myers, Yanting Pan, and Zhenni Ye, based on Gilks and Wild (1992).
 }
