@@ -249,15 +249,15 @@ lines(x6, dunif(x6), type="l", col="blue", lwd = 2)
 Student t Distribution, Chi-square Distribution with one degree of freedom, and F Distribution are not a log-concave density. The function works if it produces the error message "Please provide the log-concave density."
 
 ```{r, error=TRUE}
-# Student t Distribution
+## Student t Distribution
 t_test <- function(x){return(dt(x, 1))}
 ars(100, t_test, l = -10, 10)
 
-# Chi-square Distribution with dof = 1
+## Chi-square Distribution with df = 1
 chi_test <- function(x){return(dchisq(x, 1))}
 ars(1000, chi_test, l=1)
 
-# F Distribution
+## F Distribution
 f_test <- function(x){return(df(x, 9, 11))}
 ars(100, f_test, l=1)
 ```
